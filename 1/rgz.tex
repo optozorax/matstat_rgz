@@ -1,0 +1,321 @@
+\documentclass[12pt]{article}
+
+\usepackage[russian]{babel}
+
+\newcommand{\MExpect}{\mathsf{M}}
+
+% xelatex
+\usepackage{fontspec}
+\setmainfont[
+  Ligatures=TeX,
+  Extension=.otf,
+  BoldFont=cmunbx,
+  ItalicFont=cmunti,
+  BoldItalicFont=cmunbi,
+]{cmunrm}
+\usepackage{polyglossia}
+\setdefaultlanguage{russian}
+\setotherlanguage{english}
+
+\usepackage{indentfirst}
+\frenchspacing
+
+% Для математики
+\usepackage{amssymb,amsmath}
+\usepackage{xfrac}
+\usepackage{mathtools}
+\setcounter{MaxMatrixCols}{20}
+\parindent=24pt
+\parskip=0pt
+\tolerance=2000
+
+% Для настройки размера страницы
+\usepackage{geometry}
+\geometry{
+	a4paper,
+	total={170mm,257mm},
+	left=20mm,
+	top=20mm,
+}
+
+% Для вставки графики
+\usepackage{graphicx}
+
+% Для таблиц
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{tabu}
+\usepackage{colortbl}
+
+% Создаем команду, чтобы переносить текст на новую строку внутри таблицы
+%\newcommand{\tcell}[2][c]{\begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+\usepackage{makecell}
+
+% Пакет для списков
+\usepackage[ampersand]{easylist}
+
+% Для цветных таблиц
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\tcbuselibrary{breakable}
+
+\begin{document}
+\begin{center}
+\hfill \break
+{\Large Министерство образования и науки Российской Федерации}\\
+\hfill \break
+{\large Федеральное государственное бюджетное образовательное учреждение высшего образования}\\ 
+{\normalsize\textbf{<<НОВОСИБИРСКИЙ ГОСУДАРСТВЕННЫЙ ТЕХНИЧЕСКИЙ УНИВЕРСИТЕТ>>}}\\
+\hfill \break
+\includegraphics{nstu_logo.eps}\\
+{\large Кафедра прикладной математики}\\
+\hfill \break
+\hfill \break
+\hfill \break
+{\Large\textbf{РГЗ по курсу <<ТВиМС>>}}\\
+\hfill \break 
+{\Large Часть I}\\
+\hfill \break
+\hfill \break
+\hfill \break
+\hfill \break
+\hfill \break
+\begin{tabu}{ll}
+\textbf{Факультет:} & ПМИ \\
+\textbf{Группа:} & ПМ-63 \\
+\textbf{Студент:} & Шепрут И.И. \\
+\textbf{Вариант:} & 22 \\
+\textbf{Преподаватели:} & Постовалов С.Н.\\
+&Веретельникова И.В. \\
+\end{tabu} \\
+\hfill \break
+\hfill \break
+\hfill \break
+\hfill \break
+\hfill \break
+\hfill \break
+\hfill \break
+\hfill \break
+{\large Новосибирск\\2018}
+\end{center}
+\thispagestyle{empty}
+\newpage 
+\setcounter{page}{1}
+
+\section{Постановка задачи}
+
+Пусть $X_1, X_2, \dots, X_n$ --- выборка из распределения Вейбулла, с неизвестным параметром $\lambda$ и известным $\alpha$, обладающее плотностью: 
+\begin{equation}\label{density}
+f(x)=\frac{\alpha x^{\alpha-1}}{\lambda^\alpha} \exp\left\{-\left(\frac{x}{\lambda}\right)^\alpha\right\},\ x \geqslant 0,\ \lambda > 0,\ \alpha > 0
+\end{equation}
+
+\begin{easylist}
+\ListProperties(Hang1=true)
+& Найти точечную оценку неизвестного параметра $\theta$ (или некоторой функции $\tau(\theta)$) по методу моментов или по методу максимального правдоподобия. Проверить полученную оценку на несмещенность, состоятельность и эффективность.
+& Найти достаточную статистику.
+& Найти функцию $\tau(\theta)$, допускающую эффективную оценку.
+& Построить точный доверительный интервал.
+& Построить асимптотический доверительный интервал.
+\end{easylist}
+
+\section{Решение}
+
+\subsection{Нахождение точечной оценки}
+
+\noindent Вычисляем момент произвольного порядка для \eqref{density}:
+\begin{align}
+&\MExpect X_i^k&&= \int\limits_0^\infty x^k f(x)\,dx = \int\limits_0^\infty x^k\frac{\alpha x^{\alpha-1}}{\lambda^\alpha} \exp\left\{-\left(\frac{x}{\lambda}\right)^\alpha\right\}\,dx = \frac{\alpha}{\lambda^a}\int\limits_0^\infty x^{\alpha+k-1} \exp\left\{-\left(\frac{x}{\lambda}\right)^\alpha\right\}\,dx = \notag\\
+&&&= \left|
+\begin{aligned}
+	&t=\left(\frac{x}{\lambda}\right)^\alpha\!, x=\lambda t^{\frac{1}{\alpha}}\\
+	&a_t = 0, b_t = \infty \notag \\
+	&dx=\frac{\lambda}{\alpha}t^{\frac{1}{\alpha}-1}\,dt
+\end{aligned}\right| = \frac{\alpha}{\lambda^a}\int\limits_0^\infty \left(\lambda t^{\frac{1}{\alpha}}\right)^{\alpha+k-1}\cdot e^{-t}\cdot\frac{\lambda}{\alpha}t^{\frac{1}{\alpha}-1}\,dt = \lambda^k\int\limits_0^\infty t^{\left(1+\frac{k}{\alpha}\right)-1} e^{-t}\,dt = \notag\\
+&&&= \boxed{\lambda^k\Gamma \left(1+\frac{k}{\alpha} \right) = \MExpect X_i^k}
+\end{align}
+
+\noindent Вычисляем математическое ожидание для \eqref{density}:
+
+\begin{equation}\label{mx}
+\boxed{\MExpect X_i = \lambda\Gamma \left(1+\frac{1}{\alpha} \right)}
+\end{equation}
+
+\noindent Вычисляем дисперсию для \eqref{density}:
+\begin{equation}\label{dx}
+\begin{aligned}
+&\Variance X_i &&= \MExpect X_i^2 - \left(\MExpect X_i\right)^2 = \lambda^2\Gamma \left(1+\frac{2}{\alpha} \right) - \lambda^2\Gamma^2 \left(1+\frac{1}{\alpha} \right) = \\
+&&&= \boxed{\lambda^2\left[\Gamma \left(1+\frac{2}{\alpha} \right) - \Gamma^2 \left(1+\frac{1}{\alpha} \right)\right] = \Variance X_i}
+\end{aligned}
+\end{equation}
+
+\subsubsection{Нахождение оценки методом моментов}
+\noindent Приравниваем теоретический \eqref{mx} и выборочный момент:
+\begin{gather}
+	\MExpect X_i = \bar{X} \notag\\
+	\hat{\theta}\Gamma \left(1+\frac{1}{\alpha} \right) = \bar{X} \notag\\
+	\boxed{\hat{\theta} = \frac{\bar{X}}{\Gamma \left(1+\frac{1}{\alpha} \right)} \label{eval}} \\
+	\boxed{T(\mathbb{X}_n) = \frac{\bar{X}}{\Gamma \left(1+\frac{1}{\alpha} \right)}} \label{stat}
+\end{gather}
+
+\subsubsection{Проверка на несмещенность}
+Статистика $T(\mathbb{X}_n)$ называется \textsl{несмещенной} оценкой параметра $\theta$, если выполняется условие $\MExpect [T(\mathbb{X}_n)] = \theta,\ \forall \theta \in \Theta$.
+
+\noindent Проверяем это для статистики \eqref{stat}:
+$$
+\begin{aligned}
+	&\MExpect [T(\mathbb{X}_n)] &\stackrel{?}{=} \theta \Rightarrow\quad && \MExpect \left[\frac{\bar{X}}{\Gamma \left(1+\frac{1}{\alpha} \right)}\right] &\stackrel{?}{=} \theta \Rightarrow\quad \\[1.3ex]
+	\Rightarrow\quad &\frac{\MExpect \bar{X}}{\Gamma \left(1+\frac{1}{\alpha} \right)} &\stackrel{?}{=} \theta \Rightarrow\quad && \frac{\frac{1}{n}\sum_{i=1}^n \MExpect X_i}{\Gamma \left(1+\frac{1}{\alpha} \right)} &\stackrel{?}{=} \theta \Rightarrow\quad \\[1.3ex]
+	\Rightarrow\quad &\frac{\frac{1}{n} n \theta \Gamma \left(1+\frac{1}{\alpha} \right)}{\Gamma \left(1+\frac{1}{\alpha} \right)} &\stackrel{?}{=} \theta \Rightarrow\quad && \Aboxed{\theta &= \theta}
+\end{aligned}
+$$
+
+\begin{center}
+\textbf{Таким образом, оценка является несмещенной.}
+\end{center}
+
+\subsubsection{Проверка на состоятельность}
+
+\textsl{Критерий состоятельности:} если оценка $\hat{\theta}$ является несмещенной и $\Variance T(\mathbb{X}_n) \xrightarrow{n\to \infty} 0 $, то она также является и состоятельной.
+
+\noindent Проверяем \eqref{eval} на состоятельность:
+\begin{equation}\label{dtx}
+\Variance T(\mathbb{X}_n) = \Variance \left[\frac{\bar{X}}{\Gamma \left(1+\frac{1}{\alpha} \right)}\right] = \frac{\frac{1}{n} \Variance X_i}{\Gamma^2 \left(1+\frac{1}{\alpha} \right)} = \boxed{\frac{1}{n}\cdot \frac{\theta^2\left[\Gamma \left(1+\frac{2}{\alpha} \right) - \Gamma^2 \left(1+\frac{1}{\alpha} \right)\right]}{\Gamma^2 \left(1+\frac{1}{\alpha} \right)} = \Variance T(\mathbb{X}_n)}
+\end{equation}
+
+$$
+\Variance T(\mathbb{X}_n) \xrightarrow{n\to \infty} 0
+$$
+
+\begin{center}
+\textbf{Таким образом, оценка является состоятельной.}
+\end{center}
+
+\subsubsection{Проверка на эффективность}
+Если распределение является регулярным, и достигается нижняя граница в неравенстве Рао-Крамера \eqref{raokramer}, то оценка называется \textsl{эффективной}.
+\begin{equation}\label{raokramer}
+\Variance T(\mathbb{X}_n) = \frac{\left[\tau'(\theta)\right]^2}{n\cdot i(\theta)}
+\end{equation}
+
+Распределение, очевидно, является регулярным, т. к. плотность \eqref{density} дифференцируема по $\theta$, и множество $\{x : f(x, \theta)=0\}$ не зависит от $\theta$. Поэтому проверим неравенство Рао-Крамера. Но для начала вычислим $i(\theta)$:
+
+\begin{align}
+&i(\theta) &&= - \MExpect \left[\frac{\partial^2 \ln f(X, \theta)}{\partial \theta^2}\right] = - \MExpect \left[\frac{\partial^2\left((\alpha-1)\ln x - \alpha\ln\theta -\left(\frac{X}{\theta}\right)^\alpha\right)}{\partial \theta^2}\right] = \MExpect \left[\frac{\partial\left(\frac{\alpha}{\theta} - \frac{\alpha}{\theta}\left(\frac{X}{\theta}\right)^\alpha\right)}{\partial \theta}\right] = \notag\\
+&&&= \MExpect \left[-\frac{\alpha}{\theta^2} + \frac{\alpha(\alpha+1)}{\theta^2}\left(\frac{X}{\theta}\right)^\alpha\right] = -\frac{\alpha}{\theta^2} + \frac{\alpha(\alpha+1)}{\theta^{\alpha+2}}\MExpect X^\alpha = -\frac{\alpha}{\theta^2} + \frac{\alpha(\alpha+1)}{\theta^{\alpha+2}} \theta^\alpha\Gamma \left(1+\frac{\alpha}{\alpha} \right) =\notag\\
+&&&= \boxed{\frac{\alpha^2}{\theta^2} = i(\theta)}\label{i}
+\end{align}
+
+Проверка равенства Рао-Крамера \eqref{raokramer}, используя \eqref{i} и \eqref{dtx}:
+$$
+\begin{aligned}
+\Variance T(\mathbb{X}_n) &\stackrel{?}{=} \frac{\left[\tau'(\theta)\right]^2}{n\cdot i(\theta)} \\
+\frac{1}{n}\cdot \frac{\theta^2\left[\Gamma \left(1+\frac{2}{\alpha} \right) - \Gamma^2 \left(1+\frac{1}{\alpha} \right)\right]}{\Gamma^2 \left(1+\frac{1}{\alpha} \right)} &\stackrel{?}{=} \frac{\theta^2}{n\alpha^2} \\
+\frac{\Gamma \left(1+\frac{2}{\alpha} \right)}{\Gamma^2 \left(1+\frac{1}{\alpha} \right)} &\stackrel{?}{=} \frac{1}{\alpha^2}+1
+\end{aligned}
+$$
+
+Это равенство выполняется при $\alpha=1$ и $\alpha \approx -0.6694444982\dotso$ . Первое подходит по условию, а второе нет.
+
+\begin{center}
+\textbf{Таким образом, оценка является эффективной только при $\alpha=1$.}
+\end{center}
+
+\subsection{Нахождение достаточной статистики}
+
+Воспользуемся \textit{критерием факторизации:} для того, чтобы статистика $T(\mathbb{X}_n)$ была достаточной для модели $F=\{F(x, \theta),\ \theta\in\Theta\}$, необходимо и достаточно, чтобы функция правдоподобия имела вид:
+\begin{equation}\label{dostat}
+	L(\mathbb{X}_n, \theta) = h(\mathbb{X}_n)\cdot g(T(\mathbb{X}_n), \theta)
+\end{equation}
+
+Приводим к необходимому виду:
+
+$$
+\begin{aligned}
+	L(\mathbb{X}_n, \theta) = \prod_{i=1}^{n} \frac{\alpha X_i^{\alpha-1}}{\theta^\alpha} \exp\left\{-\frac{X_i^\alpha}{\theta^\alpha}\right\} = \underbrace{\alpha^n \theta^{-\alpha n} \exp\left\{-\frac{1}{\theta^\alpha}\overbrace{\sum_{i=1}^n X_i^\alpha}^{T(\mathbb{X}_n)}\right\}}_{g(T(\mathbb{X}_n), \theta)} \cdot \underbrace{\vphantom{
+	\alpha^n \theta^{-\alpha n} \exp\left\{-\frac{1}{\theta^\alpha}\overbrace{\sum_{i=1}^n X_i^\alpha}^{T(\mathbb{X}_n)}\right\}
+}\prod_{i=1}^n X_i^{\alpha-1}}_{h(\mathbb{X}_n)}
+\end{aligned}
+$$
+
+\begin{center}
+\textbf{Таким образом, статистика $T(\mathbb{X}_n) = \sum_{i=1}^n X_i^\alpha $ является достаточной для модели $F=\{F(x, \theta),\ \theta\in\Theta\}$.}
+\end{center}
+
+\subsection{Нахождение функции, допускающей эффективную оценку}
+
+Нам уже известно, что распределение является регулярным, поэтому воспользуемся критерием \textit{эффективности:} $T(\mathbb{X}_n)$ --- эффективная оценка $\tau(\theta)$, если 
+$$
+	U(\mathbb{X}_n, \theta)\cdot a(\theta) = T(\mathbb{X}_n) - \tau(\theta),
+$$
+где $a(\theta)$ --- некоторая функция от $\theta$, $U(\mathbb{X}_n, \theta) = \frac{\partial \ln L(\mathbb{X}_n, \theta)}{\partial \theta}$.
+
+\begin{align}
+	&U(\mathbb{X}_n, \theta) = \frac{\partial \ln\left[\prod_{i=1}^{n} \frac{\alpha X_i^{\alpha-1}}{\theta^\alpha} \exp\left\{-\frac{X_i^\alpha}{\theta^\alpha}\right\}\right]}{\partial \theta} \notag\\
+	&U(\mathbb{X}_n, \theta) = \frac{\partial \left[n\ln\alpha - n\alpha\ln \theta + (\alpha-1)\sum_{i=1}^n \ln X_i - \frac{1}{\theta^\alpha}\sum_{i=1}^n X_i^\alpha\right]}{\partial \theta} \notag\\
+	&U(\mathbb{X}_n, \theta) = -\frac{n\alpha}{\theta} + \frac{\alpha}{\theta^{\alpha+1}}\sum_{i=1}^n X_i^\alpha \notag\\
+	&\boxed{U(\mathbb{X}_n, \theta) = \frac{n\alpha}{\theta^{\alpha+1}}\left[\frac{1}{n}\sum_{i=1}^n X_i^\alpha - \theta^\alpha \right]}\label{u} \\
+	&U(\mathbb{X}_n, \theta) \cdot \underbrace{\vphantom{\frac{1}{n}\sum_{i=1}^n X_i^\alpha} \frac{\theta^{\alpha+1}}{n\alpha}}_{a(\theta)} = \underbrace{\frac{1}{n}\sum_{i=1}^n X_i^\alpha}_{T(\mathbb{X}_n)} - \underbrace{\vphantom{\frac{1}{n}\sum_{i=1}^n X_i^\alpha} \theta^\alpha}_{\tau(\theta)} \notag
+\end{align}
+
+\begin{center}
+\textbf{Таким образом, статистика $T(\mathbb{X}_n) = \frac{1}{n}\sum_{i=1}^n X_i^\alpha $ является эффективной оценкой функции $\tau(\theta) = \theta^\alpha$.}
+\end{center}
+
+\subsection{Построение точного доверительного интервала}
+
+Для построения доверительного интервала используем центральную статистику.
+
+Так как функция распределения:
+
+$$
+F(x, \lambda) = \int\limits_{-\infty}^{x} f(t, \lambda)\,dt = \left\{
+\begin{aligned}
+	&0,\ &&x < 0,\ \\
+	&1-e^{-\left(\frac{x}{\lambda}\right)^\alpha},\  && x \geqslant 0,\
+\end{aligned}\right.
+$$
+
+монотонно убывает по $\lambda$, то можем взять в качестве центральной статистики функцию
+
+$$
+	G(\mathbb{X}_n, \theta) = -\sum_{i=1}^n \ln F(X_i, \theta) = -\sum_{i=1}^n \ln \bigg(1-e^{-\left(\frac{X_i}{\theta}\right)^\alpha}\bigg) \succ \Gamma(\beta, n),\ \beta > 0
+$$
+
+Тогда границы доверительного интервала $(\tilde{T_1},\ \tilde{T_2})$ определяются при численном решении уравнений $G(\mathbb{X}_n, T_1) = g_1,\ G(\mathbb{X}_n, T_2) = g_2$, где $g_1 < g_2$, $\tilde{T_1} = \min\{T_1, T_2\},\ \tilde{T_2} = \max\{T_1, T_2\}$ и $\Prob\{g1\leqslant G(\mathbb{X}_n, \theta)\leqslant g_2\} = \gamma$, т. е. $g_1,\ g_2$ должны удовлетворять уравнению:
+
+$$
+\int\limits_{g_1}^{g_2} \frac{x^{n-1}e^{-x/\beta}}{\Gamma(n) \beta^n}\,dx = \gamma
+$$
+
+\subsection{Построение асимптотического доверительного интервала}
+Оценки максимального правдоподобия являются асимптотически эффективными и асимптотически нормальными, следовательно сходятся к стандартному нормальному распределению. Следовательно, случайный интервал $
+\left(
+	\hat\theta - \sfrac{c_\gamma}{\sqrt{n i(\hat\theta)}}, 
+	\hat\theta + \sfrac{c_\gamma}{\sqrt{n i(\hat\theta)}}
+\right)
+$, где $c_\gamma = \Phi^{-1}\left(\frac{\gamma+1}{2}\right)$, является асимптотическим $\gamma$-доверительным интервалом.
+
+Поэтому для начала построим ОМП-оценку параметра $\lambda$. Воспользуемся \eqref{u}:
+
+$$
+U(\mathbb{X}_n, \theta) = 0 \quad\Rightarrow\quad
+\frac{n\alpha}{\theta^{\alpha+1}}\left[\frac{1}{n}\sum_{i=1}^n X_i^\alpha - \theta^\alpha \right] = 0 \quad\Rightarrow\quad
+\boxed{\hat{\theta} = \sqrt[\alpha]{\frac{1}{n}\sum_{i=1}^n X_i^\alpha}}
+$$
+
+А также, используя \eqref{i}, получаем: $ i(\hat\theta) = \frac{\alpha^2}{\hat{\theta}^2} $. Строим асимптотический доверительный интервал:
+
+$$
+\left(
+	\hat\theta - \frac{c_\gamma}{\sqrt{n i(\hat\theta)}}, 
+	\hat\theta + \frac{c_\gamma}{\sqrt{n i(\hat\theta)}}
+\right)
+$$
+
+$$
+\left(
+	\sqrt[\alpha]{\frac{1}{n}\sum_{i=1}^n X_i^\alpha}\left(1 - \frac{c_\gamma }{\alpha\sqrt{n}}\right),\
+	\sqrt[\alpha]{\frac{1}{n}\sum_{i=1}^n X_i^\alpha}\left(1 + \frac{c_\gamma }{\alpha\sqrt{n}}\right)
+\right)
+$$
+
+\end{document}
